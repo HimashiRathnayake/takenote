@@ -11,19 +11,20 @@ export const showConfirmationAlert = (
   darkTheme: boolean
 ) => {
   confirmAlert({
-    // eslint-disable-next-line react/display-name
     customUI: ({ onClose }) => {
-      return (
-        <ConfirmDialog
-          onCancel={() => onClose()}
-          onConfirm={() => {
-            onConfirm()
-            onClose()
-          }}
-          content={content}
-          darkTheme={darkTheme}
-        />
-      )
+      return (function Actions() {
+        return (
+          <ConfirmDialog
+            onCancel={() => onClose()}
+            onConfirm={() => {
+              onConfirm()
+              onClose()
+            }}
+            content={content}
+            darkTheme={darkTheme}
+          />
+        )
+      })()
     },
     overlayClassName: 'dimmer',
     closeOnClickOutside: false,
