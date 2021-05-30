@@ -32,6 +32,18 @@ import UIfx from 'uifx';
   const alertSound = require("../../../sounds/Alert.mp3");
   const alertClick = new UIfx(alertSound, {volume: 0.4});
 
+  const favouriteSound = require("../../../sounds/Favourite.wav");
+  const favouriteClick = new UIfx(favouriteSound, {volume: 0.4});
+
+  const downloadSound = require("../../../sounds/Download.mp3");
+  const downloadClick = new UIfx(downloadSound, {volume: 0.4});
+
+  const copySound = require("../../../sounds/Copy.mp3");
+  const copyClick = new UIfx(copySound, {volume: 0.4});
+
+  const clickSound = require("../../../sounds/Click.mp3");
+  const click = new UIfx(clickSound, {volume: 0.4});
+
 export interface ContextMenuOptionsProps {
   clickedItem: NoteItem | CategoryItem
   type: ContextMenuEnum
@@ -149,7 +161,8 @@ const NotesOptions: React.FC<NotesOptionsProps> = ({ clickedNote }) => {
   // Handlers
   // ===========================================================================
 
-  const deleteNotesHandler = () =>
+  const deleteNotesHandler = () => {
+    alertClick.play()
     showConfirmationAlert(
       LabelText.NOTE_DELETE_ALERT_CONTENT,
       () => {
@@ -157,16 +170,23 @@ const NotesOptions: React.FC<NotesOptionsProps> = ({ clickedNote }) => {
       },
       darkTheme
     )
-  const downloadNotesHandler = () =>
+  }
+  const downloadNotesHandler = () => {
+    downloadClick.play()
     downloadNotes(
       selectedNotesIds.includes(clickedNote.id) ? selectedNotes : [clickedNote],
       categories
     )
-  const favoriteNoteHandler = () => _toggleFavoriteNotes(clickedNote.id)
+  } 
+  const favoriteNoteHandler = () => {
+    favouriteClick.play()
+    _toggleFavoriteNotes(clickedNote.id)
+  }
   const trashNoteHandler = () => {
     if (clickedNote.trash) {
       _toggleTrashNotes(clickedNote.id)
     } else {
+      alertClick.play()
       showConfirmationAlert(
         LabelText.NOTE_TO_TRASH_ALERT_CONTENT,
         () => _toggleTrashNotes(clickedNote.id),
@@ -175,12 +195,14 @@ const NotesOptions: React.FC<NotesOptionsProps> = ({ clickedNote }) => {
     }
   }
   const removeCategoryFromNoteHandler = () => {
+    click.play()
     _addCategoryToNote('', clickedNote.id)
     _updateActiveNote(clickedNote.id, false)
   }
   const copyLinkedNoteMarkdownHandler = (e: React.SyntheticEvent, note: NoteItem) => {
     e.preventDefault()
 
+    copyClick.play()
     const shortNoteUuid = getShortUuid(note.id)
     copyToClipboard(`{{${shortNoteUuid}}}`)
   }
