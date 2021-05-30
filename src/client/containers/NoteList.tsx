@@ -19,13 +19,15 @@ import {
 import { NoteItem, ReactDragEvent, ReactMouseEvent } from '@/types'
 import { getNotes, getSettings, getCategories } from '@/selectors'
 import { getNotesSorter } from '@/utils/notesSortStrategies'
+import { showConfirmationAlert } from '@/containers/ConfirmDialog'
+import { LabelText } from '@resources/LabelText'
 
 export const NoteList: React.FC = () => {
   // ===========================================================================
   // Selectors
   // ===========================================================================
 
-  const { notesSortKey } = useSelector(getSettings)
+  const { notesSortKey, darkTheme } = useSelector(getSettings)
   const { activeCategoryId, activeFolder, selectedNotesIds, notes, searchValue } = useSelector(
     getNotes
   )
@@ -163,7 +165,13 @@ export const NoteList: React.FC = () => {
           <NoteListButton
             dataTestID={TestID.EMPTY_TRASH_BUTTON}
             label="Empty"
-            handler={() => _permanentlyEmptyTrash()}
+            handler={() =>
+              showConfirmationAlert(
+                LabelText.EMPTY_TRASH_ALERT_CONTENT,
+                () => _permanentlyEmptyTrash(),
+                darkTheme
+              )
+            }
           >
             Empty Trash
           </NoteListButton>
