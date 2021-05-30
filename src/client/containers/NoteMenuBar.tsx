@@ -71,6 +71,9 @@ export const NoteMenuBar = () => {
   const previewSound = require("../../../sounds/Preview.mp3");
   const previewClick = new UIfx(previewSound, {volume: 0.4});
 
+  const alertSound = require("../../../sounds/Alert.mp3");
+  const alertClick = new UIfx(alertSound, {volume: 0.4});
+
 
   // ===========================================================================
   // State
@@ -121,6 +124,7 @@ export const NoteMenuBar = () => {
   }
   const trashNoteHandler = () => {
     if (activeNote.trash) {
+      alertClick.play()
       showConfirmationAlert(
         LabelText.NOTE_DELETE_ALERT_CONTENT,
         () => {
@@ -130,6 +134,7 @@ export const NoteMenuBar = () => {
         darkTheme
       )
     } else {
+      alertClick.play()
       showConfirmationAlert(
         LabelText.NOTE_TO_TRASH_ALERT_CONTENT,
         () => {
