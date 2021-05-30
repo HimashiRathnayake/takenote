@@ -45,7 +45,6 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 }) => {
   const theme = darkTheme ? ' dark-mode-alert' : ''
 
-  // eslint-disable-next-line react/display-name
   return (
     <div>
       <div className="react-confirm-alert">
