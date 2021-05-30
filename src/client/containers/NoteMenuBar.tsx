@@ -10,7 +10,6 @@ import {
   Loader,
   Clipboard as ClipboardCmp,
 } from 'react-feather'
-import Tooltip from '@material-ui/core/Tooltip'
 
 import { TestID } from '@resources/TestID'
 import { LastSyncedNotification } from '@/components/LastSyncedNotification'
@@ -25,6 +24,8 @@ import { downloadNotes, isDraftNote, getShortUuid, copyToClipboard } from '@/uti
 import { sync } from '@/slices/sync'
 import { showConfirmationAlert } from '@/containers/ConfirmDialog'
 import { LabelText } from '@resources/LabelText'
+import Tooltip from '@material-ui/core/Tooltip'
+import UIfx from 'uifx';
 
 export const NoteMenuBar = () => {
   // ===========================================================================
@@ -44,6 +45,32 @@ export const NoteMenuBar = () => {
   const successfulCopyMessage = 'Note copied!'
   const activeNote = notes.find((note) => note.id === activeNoteId)!
   const shortNoteUuid = getShortUuid(activeNoteId)
+
+// ===========================================================================
+  // Sound Efect
+  // ===========================================================================
+
+  const favouriteSound = require("../../../sounds/Favourite.wav");
+  const favouriteClick = new UIfx(favouriteSound, {volume: 0.4});
+
+  const deleteSound = require("../../../sounds/Delete.mp3");
+  const deleteClick = new UIfx(deleteSound, {volume: 0.4});
+
+  const downloadSound = require("../../../sounds/Download.mp3");
+  const downloadClick = new UIfx(downloadSound, {volume: 0.4});
+
+  const copySound = require("../../../sounds/Copy.mp3");
+  const copyClick = new UIfx(copySound, {volume: 0.4});
+
+  const refreshSound = require("../../../sounds/Refresh.mp3");
+  const refreshClick = new UIfx(refreshSound, {volume: 0.4});
+
+  const editSound = require("../../../sounds/Edit.mp3");
+  const editClick = new UIfx(editSound, {volume: 0.4});
+
+  const previewSound = require("../../../sounds/Preview.mp3");
+  const previewClick = new UIfx(previewSound, {volume: 0.4});
+
 
   // ===========================================================================
   // State
@@ -84,13 +111,20 @@ export const NoteMenuBar = () => {
   // Handlers
   // ===========================================================================
 
-  const downloadNotesHandler = () => downloadNotes([activeNote], categories)
-  const favoriteNoteHandler = () => _toggleFavoriteNotes(activeNoteId)
+  const downloadNotesHandler = () => {
+    downloadClick.play()
+    downloadNotes([activeNote], categories)
+  }
+  const favoriteNoteHandler = () => {
+    favouriteClick.play()
+    _toggleFavoriteNotes(activeNoteId)
+  }
   const trashNoteHandler = () => {
     if (activeNote.trash) {
       showConfirmationAlert(
         LabelText.NOTE_DELETE_ALERT_CONTENT,
         () => {
+          deleteClick.play()
           _toggleTrashNotes(activeNoteId)
         },
         darkTheme
@@ -98,13 +132,24 @@ export const NoteMenuBar = () => {
     } else {
       showConfirmationAlert(
         LabelText.NOTE_TO_TRASH_ALERT_CONTENT,
-        () => _toggleTrashNotes(activeNoteId),
+        () => {
+          deleteClick.play()
+          _toggleTrashNotes(activeNoteId)
+        },
         darkTheme
       )
     }
   }
-  const syncNotesHandler = () => _sync(notes, categories)
+  const syncNotesHandler = () => {
+    refreshClick.play()
+    _sync(notes, categories)
+  }
   const togglePreviewHandler = () => {
+    if(isToggled) {
+      editClick.play()
+    } else {
+      previewClick.play()
+    }
     togglePreviewIcon(!isToggled)
     _togglePreviewMarkdown()
   }
@@ -157,6 +202,7 @@ export const NoteMenuBar = () => {
             <button
               className="note-menu-bar-button uuid"
               onClick={() => {
+                copyClick.play()
                 copyToClipboard(`{{${shortNoteUuid}}}`)
                 setUuidCopiedText(successfulCopyMessage)
               }}
@@ -185,5 +231,3 @@ export const NoteMenuBar = () => {
     </section>
   )
 }
-
-
