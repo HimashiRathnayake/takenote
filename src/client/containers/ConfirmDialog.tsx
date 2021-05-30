@@ -5,29 +5,29 @@ import { confirmAlert } from 'react-confirm-alert' // Import
 import { LabelText } from '@resources/LabelText'
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
 
-// export const showConfirmationAlert = (
-//   content: string,
-//   onConfirm: () => void,
-//   darkTheme: boolean
-// ) => {
-//   confirmAlert({
-//     customUI: ({ onClose }) => {
-//       return (
-//         <ConfirmDialog
-//           onCancel={() => onClose()}
-//           onConfirm={() => {
-//             onConfirm()
-//             onClose()
-//           }}
-//           content={content}
-//           darkTheme={darkTheme}
-//         />
-//       )
-//     },
-//     overlayClassName: 'dimmer',
-//     closeOnClickOutside: false,
-//   })
-// }
+export const showConfirmationAlert = (
+  content: string,
+  onConfirm: () => void,
+  darkTheme: boolean
+) => {
+  confirmAlert({
+    // customUI: ({ onClose }) => {
+    //   return (
+    //     <ConfirmDialog
+    //       onCancel={() => onClose()}
+    //       onConfirm={() => {
+    //         onConfirm()
+    //         onClose()
+    //       }}
+    //       content={content}
+    //       darkTheme={darkTheme}
+    //     />
+    //   )
+    // },
+    overlayClassName: 'dimmer',
+    closeOnClickOutside: false,
+  })
+}
 
 interface ConfirmDialogProps {
   onConfirm: () => void
