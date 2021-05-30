@@ -20,6 +20,17 @@ import { CategoryItem, NoteItem } from '@/types'
 import { setCategoryEdit, deleteCategory } from '@/slices/category'
 import { MenuUtilitiesContext } from '@/containers/ContextMenu'
 import { showConfirmationAlert } from '@/containers/ConfirmDialog'
+import UIfx from 'uifx';
+
+// ===========================================================================
+// Sound Efect
+// ===========================================================================
+
+  const renameSound = require("../../../sounds/Rename.mp3");
+  const renameClick = new UIfx(renameSound, {volume: 0.4});
+
+  const alertSound = require("../../../sounds/Alert.mp3");
+  const alertClick = new UIfx(alertSound, {volume: 0.4});
 
 export interface ContextMenuOptionsProps {
   clickedItem: NoteItem | CategoryItem
@@ -67,10 +78,12 @@ const CategoryOptions: React.FC<CategoryOptionsProps> = ({ clickedCategory }) =>
   // ===========================================================================
 
   const startRenameHandler = () => {
+    renameClick.play()
     _setCategoryEdit(clickedCategory.id, clickedCategory.name)
     setOptionsId('')
   }
-  const removeCategoryHandler = () =>
+  const removeCategoryHandler = () => {
+    alertClick.play()
     showConfirmationAlert(
       LabelText.CATEGORY_DELETE_ALERT_CONTENT,
       () => {
@@ -79,6 +92,7 @@ const CategoryOptions: React.FC<CategoryOptionsProps> = ({ clickedCategory }) =>
       },
       darkTheme
     )
+  }
 
   return (
     <nav className="options-nav" data-testid={TestID.CATEGORY_OPTIONS_NAV}>
