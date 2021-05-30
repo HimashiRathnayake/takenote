@@ -22,6 +22,7 @@ import { togglePreviewMarkdown, toggleSettingsModal } from '@/slices/settings'
 import { getSettings, getNotes } from '@/selectors'
 import { NoteItem } from '@/types'
 import { newNoteHandlerHelper, getActiveNote } from '@/utils/helpers'
+import UIfx from 'uifx'
 
 export const AppSidebar: React.FC = () => {
   // ===========================================================================
@@ -32,6 +33,13 @@ export const AppSidebar: React.FC = () => {
   const { previewMarkdown, notesSortKey } = useSelector(getSettings)
 
   const activeNote = getActiveNote(notes, activeNoteId)
+
+  // ===========================================================================
+  // Sound Efect
+  // ===========================================================================
+
+  const buttonClick = require("../../../sounds/Click.mp3");
+  const click = new UIfx(buttonClick, {volume: 0.4});
 
   // ===========================================================================
   // Dispatch
@@ -56,7 +64,8 @@ export const AppSidebar: React.FC = () => {
   // Handlers
   // ===========================================================================
 
-  const newNoteHandler = () =>
+  const newNoteHandler = () => {
+    click.play()
     newNoteHandlerHelper(
       activeFolder,
       previewMarkdown,
@@ -68,8 +77,10 @@ export const AppSidebar: React.FC = () => {
       _updateActiveNote,
       _updateSelectedNotes
     )
+  }
   const swapFolderHandler = _swapFolder(notesSortKey)
   const settingsHandler = () => {
+    click.play()
     _toggleSettingsModal()
   }
 
