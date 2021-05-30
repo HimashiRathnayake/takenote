@@ -5,6 +5,9 @@
   "author": "Tania Rascia",
   "license": "MIT",
   "private": false,
+  "engines": {
+    "node": "12.16.1"
+  },
   "main": "src/server/index.ts",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
