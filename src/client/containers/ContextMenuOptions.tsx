@@ -14,11 +14,12 @@ import {
   updateActiveNote,
   swapFolder,
 } from '@/slices/note'
-import { getCategories, getNotes } from '@/selectors'
+import { getCategories, getNotes, getSettings } from '@/selectors'
 import { Folder, ContextMenuEnum } from '@/utils/enums'
 import { CategoryItem, NoteItem } from '@/types'
 import { setCategoryEdit, deleteCategory } from '@/slices/category'
 import { MenuUtilitiesContext } from '@/containers/ContextMenu'
+import { showConfirmationAlert } from '@/containers/ConfirmDialog'
 
 export interface ContextMenuOptionsProps {
   clickedItem: NoteItem | CategoryItem
@@ -38,6 +39,12 @@ interface CategoryOptionsProps {
 }
 
 const CategoryOptions: React.FC<CategoryOptionsProps> = ({ clickedCategory }) => {
+  // ===========================================================================
+  // Selectors
+  // ===========================================================================
+
+  const { darkTheme } = useSelector(getSettings)
+
   // ===========================================================================
   // Dispatch
   // ===========================================================================
@@ -63,10 +70,15 @@ const CategoryOptions: React.FC<CategoryOptionsProps> = ({ clickedCategory }) =>
     _setCategoryEdit(clickedCategory.id, clickedCategory.name)
     setOptionsId('')
   }
-  const removeCategoryHandler = () => {
-    _deleteCategory(clickedCategory.id)
-    _swapFolder(Folder.ALL)
-  }
+  const removeCategoryHandler = () =>
+    showConfirmationAlert(
+      LabelText.CATEGORY_DELETE_ALERT_CONTENT,
+      () => {
+        _deleteCategory(clickedCategory.id)
+        _swapFolder(Folder.ALL)
+      },
+      darkTheme
+    )
 
   return (
     <nav className="options-nav" data-testid={TestID.CATEGORY_OPTIONS_NAV}>
@@ -98,6 +110,7 @@ const NotesOptions: React.FC<NotesOptionsProps> = ({ clickedNote }) => {
 
   const { selectedNotesIds, notes } = useSelector(getNotes)
   const { categories } = useSelector(getCategories)
+  const { darkTheme } = useSelector(getSettings)
 
   const selectedNotes = notes.filter((note) => selectedNotesIds.includes(note.id))
   const isSelectedNotesDiffFavor = Boolean(
@@ -122,14 +135,31 @@ const NotesOptions: React.FC<NotesOptionsProps> = ({ clickedNote }) => {
   // Handlers
   // ===========================================================================
 
-  const deleteNotesHandler = () => _deleteNotes(selectedNotesIds)
+  const deleteNotesHandler = () =>
+    showConfirmationAlert(
+      LabelText.NOTE_DELETE_ALERT_CONTENT,
+      () => {
+        _deleteNotes(selectedNotesIds)
+      },
+      darkTheme
+    )
   const downloadNotesHandler = () =>
     downloadNotes(
       selectedNotesIds.includes(clickedNote.id) ? selectedNotes : [clickedNote],
       categories
     )
   const favoriteNoteHandler = () => _toggleFavoriteNotes(clickedNote.id)
-  const trashNoteHandler = () => _toggleTrashNotes(clickedNote.id)
+  const trashNoteHandler = () => {
+    if (clickedNote.trash) {
+      _toggleTrashNotes(clickedNote.id)
+    } else {
+      showConfirmationAlert(
+        LabelText.NOTE_TO_TRASH_ALERT_CONTENT,
+        () => _toggleTrashNotes(clickedNote.id),
+        darkTheme
+      )
+    }
+  }
   const removeCategoryFromNoteHandler = () => {
     _addCategoryToNote('', clickedNote.id)
     _updateActiveNote(clickedNote.id, false)
