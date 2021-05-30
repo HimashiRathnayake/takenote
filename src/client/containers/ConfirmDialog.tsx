@@ -11,19 +11,20 @@ export const showConfirmationAlert = (
   darkTheme: boolean
 ) => {
   confirmAlert({
-    // customUI: ({ onClose }) => {
-    //   return (
-    //     <ConfirmDialog
-    //       onCancel={() => onClose()}
-    //       onConfirm={() => {
-    //         onConfirm()
-    //         onClose()
-    //       }}
-    //       content={content}
-    //       darkTheme={darkTheme}
-    //     />
-    //   )
-    // },
+    // eslint-disable-next-line react/display-name
+    customUI: ({ onClose }) => {
+      return (
+        <ConfirmDialog
+          onCancel={() => onClose()}
+          onConfirm={() => {
+            onConfirm()
+            onClose()
+          }}
+          content={content}
+          darkTheme={darkTheme}
+        />
+      )
+    },
     overlayClassName: 'dimmer',
     closeOnClickOutside: false,
   })
@@ -36,6 +37,7 @@ interface ConfirmDialogProps {
   content?: string
   darkTheme?: boolean
 }
+
 export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   onConfirm,
   onCancel,
