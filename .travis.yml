@@ -26,7 +26,7 @@ install:
   # Install dependencies for tests
   - echo "MTY1LjIyNy42MC4zMyBlY2RzYS1zaGEyLW5pc3RwMjU2IEFBQUFFMlZqWkhOaExYTm9ZVEl0Ym1semRIQXlOVFlBQUFBSWJtbHpkSEF5TlRZQUFBQkJCTVVPRlVVT3BxSzNmWkMzUUxJNmsrL2Vlc1l5YVVaNGZXbkRUaWNia1pjMmJIR1ltMG4wVk9RaW5mK0NYY2xhWmZTaVBNQ0xZakJUUzkrUWxWSFpPZ009" | base64 -d >> $HOME/.ssh/known_hosts
   - sudo snap install doctl
-  - npm ci
+  - npm ci --only-production
 
 before_script:
   # Start server and client for tests
