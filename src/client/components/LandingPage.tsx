@@ -44,7 +44,7 @@ export const LandingPage: React.FC = () => {
                     and <b>not</b> persisted in any database or cloud.
                   </p>
                   <a className="button" href="/app">
-                    View Demo console.log(process.env.CLIENT_ID);
+                    View Demo
                   </a>
                 </div>
               </div>
@@ -56,7 +56,7 @@ export const LandingPage: React.FC = () => {
                     account for authentication, and stores the data in a private{' '}
                     <code>takenotes-data</code> repo.
                   </p>
-                  <div className="cta">{loginButton('Sign Up with GitHub')} console.log();</div>
+                  <div className="cta">{loginButton('Sign Up with GitHub')}</div>
                 </div>
               </div>
             )}
