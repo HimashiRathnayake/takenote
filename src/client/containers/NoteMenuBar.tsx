@@ -27,6 +27,8 @@ import { toggleFavoriteNotes, toggleTrashNotes } from '@/slices/note'
 import { getCategories, getNotes, getSync, getSettings } from '@/selectors'
 import { downloadNotes, isDraftNote, getShortUuid, copyToClipboard } from '@/utils/helpers'
 import { sync } from '@/slices/sync'
+import { showConfirmationAlert } from '@/containers/ConfirmDialog'
+import { LabelText } from '@resources/LabelText'
 
 export const NoteMenuBar = () => {
   // ===========================================================================
@@ -90,7 +92,23 @@ export const NoteMenuBar = () => {
 
   const downloadNotesHandler = () => downloadNotes([activeNote], categories)
   const favoriteNoteHandler = () => _toggleFavoriteNotes(activeNoteId)
-  const trashNoteHandler = () => _toggleTrashNotes(activeNoteId)
+  const trashNoteHandler = () => {
+    if (activeNote.trash) {
+      showConfirmationAlert(
+        LabelText.NOTE_DELETE_ALERT_CONTENT,
+        () => {
+          _toggleTrashNotes(activeNoteId)
+        },
+        darkTheme
+      )
+    } else {
+      showConfirmationAlert(
+        LabelText.NOTE_TO_TRASH_ALERT_CONTENT,
+        () => _toggleTrashNotes(activeNoteId),
+        darkTheme
+      )
+    }
+  }
   const syncNotesHandler = () => _sync(notes, categories)
   const settingsHandler = () => _toggleSettingsModal()
   const toggleDarkThemeHandler = () => {
