@@ -21,6 +21,7 @@ import { getNotes, getSettings, getCategories } from '@/selectors'
 import { getNotesSorter } from '@/utils/notesSortStrategies'
 import { showConfirmationAlert } from '@/containers/ConfirmDialog'
 import { LabelText } from '@resources/LabelText'
+import UIfx from 'uifx';
 
 export const NoteList: React.FC = () => {
   // ===========================================================================
@@ -49,6 +50,13 @@ export const NoteList: React.FC = () => {
     (searchValue: string) => dispatch(searchNotes(searchValue)),
     100
   )
+
+  // ===========================================================================
+  // Sound Efect
+  // ===========================================================================
+
+  const alertSound = require("../../../sounds/Alert.mp3");
+  const alertClick = new UIfx(alertSound, {volume: 0.4});
 
   // ===========================================================================
   // Refs
@@ -165,12 +173,14 @@ export const NoteList: React.FC = () => {
           <NoteListButton
             dataTestID={TestID.EMPTY_TRASH_BUTTON}
             label="Empty"
-            handler={() =>
+            handler={() => {
+              alertClick.play()
               showConfirmationAlert(
                 LabelText.EMPTY_TRASH_ALERT_CONTENT,
                 () => _permanentlyEmptyTrash(),
                 darkTheme
               )
+            }
             }
           >
             Empty Trash
