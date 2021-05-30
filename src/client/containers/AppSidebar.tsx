@@ -1,5 +1,5 @@
 import React from 'react'
-import { Plus } from 'react-feather'
+import { Plus, Settings } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { LabelText } from '@resources/LabelText'
@@ -18,7 +18,7 @@ import {
   updateSelectedNotes,
   unassignTrashFromNotes,
 } from '@/slices/note'
-import { togglePreviewMarkdown } from '@/slices/settings'
+import { togglePreviewMarkdown, toggleSettingsModal } from '@/slices/settings'
 import { getSettings, getNotes } from '@/selectors'
 import { NoteItem } from '@/types'
 import { newNoteHandlerHelper, getActiveNote } from '@/utils/helpers'
@@ -50,6 +50,7 @@ export const AppSidebar: React.FC = () => {
   const _assignTrashToNotes = (noteId: string) => dispatch(assignTrashToNotes(noteId))
   const _unassignTrashFromNotes = (noteId: string) => dispatch(unassignTrashFromNotes(noteId))
   const _assignFavoriteToNotes = (noteId: string) => dispatch(assignFavoriteToNotes(noteId))
+  const _toggleSettingsModal = () => dispatch(toggleSettingsModal())
 
   // ===========================================================================
   // Handlers
@@ -68,6 +69,9 @@ export const AppSidebar: React.FC = () => {
       _updateSelectedNotes
     )
   const swapFolderHandler = _swapFolder(notesSortKey)
+  const settingsHandler = () => {
+    _toggleSettingsModal()
+  }
 
   return (
     <aside className="app-sidebar">
@@ -109,6 +113,13 @@ export const AppSidebar: React.FC = () => {
         />
         <CategoryList />
       </section>
+      <ActionButton
+        dataTestID={TestID.SETTINGS_MODAL_DOWNLOAD_NOTES}
+        handler={settingsHandler}
+        icon= {Settings}
+        label={LabelText.SETTINGS}
+        text={LabelText.SETTINGS}
+      />
     </aside>
   )
 }
