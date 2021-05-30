@@ -13,6 +13,7 @@ import {
   Moon,
   Clipboard as ClipboardCmp,
 } from 'react-feather'
+import Tooltip from '@material-ui/core/Tooltip'
 
 import { TestID } from '@resources/TestID'
 import { LastSyncedNotification } from '@/components/LastSyncedNotification'
@@ -129,45 +130,69 @@ export const NoteMenuBar = () => {
             onClick={togglePreviewHandler}
             data-testid={TestID.PREVIEW_MODE}
           >
-            {isToggled ? <Edit size={18} /> : <Eye size={18} />}
+            {isToggled ? (
+              <Tooltip title="Edit" arrow>
+                <Edit size={18} />
+              </Tooltip>
+            ) : (
+              <Tooltip title="Preview" arrow>
+                <Eye size={18} />
+              </Tooltip>
+            )}
           </button>
           {!activeNote.scratchpad && (
             <>
               <button className="note-menu-bar-button" onClick={favoriteNoteHandler}>
-                <Star size={18} />
+                {activeNote.favorite ? (
+                  <Tooltip title="Remove from Favourites" arrow>
+                    <Star size={18} fill="black" />
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Add to Favourites" arrow>
+                    <Star size={18} />
+                  </Tooltip>
+                )}
               </button>
               <button className="note-menu-bar-button trash" onClick={trashNoteHandler}>
-                <Trash2 size={18} />
+                <Tooltip title="Delete" arrow>
+                  <Trash2 size={18} />
+                </Tooltip>
               </button>
             </>
           )}
           <button className="note-menu-bar-button">
-            <Download size={18} onClick={downloadNotesHandler} />
+            <Tooltip title="Download" arrow>
+              <Download size={18} onClick={downloadNotesHandler} />
+            </Tooltip>
           </button>
-          <button
-            className="note-menu-bar-button uuid"
-            onClick={() => {
-              copyToClipboard(`{{${shortNoteUuid}}}`)
-              setUuidCopiedText(successfulCopyMessage)
-            }}
-            data-testid={TestID.UUID_MENU_BAR_COPY_ICON}
-          >
-            {copyNoteIcon}
-            {uuidCopiedText && <span className="uuid-copied-text">{uuidCopiedText}</span>}
-          </button>
+          <Tooltip title="Copy" arrow>
+            <button
+              className="note-menu-bar-button uuid"
+              onClick={() => {
+                copyToClipboard(`{{${shortNoteUuid}}}`)
+                setUuidCopiedText(successfulCopyMessage)
+              }}
+              data-testid={TestID.UUID_MENU_BAR_COPY_ICON}
+            >
+              {copyNoteIcon}
+              {uuidCopiedText && <span className="uuid-copied-text">{uuidCopiedText}</span>}
+            </button>
+          </Tooltip>
         </nav>
       ) : (
         <div />
       )}
       <nav>
         <LastSyncedNotification datetime={lastSynced} pending={pendingSync} syncing={syncing} />
-        <button
-          className="note-menu-bar-button"
-          onClick={syncNotesHandler}
-          data-testid={TestID.TOPBAR_ACTION_SYNC_NOTES}
-        >
-          {syncing ? <Loader size={18} className="rotating-svg" /> : <RefreshCw size={18} />}
-        </button>
+        <Tooltip title="Refresh" arrow>
+          <button
+            className="note-menu-bar-button"
+            onClick={syncNotesHandler}
+            data-testid={TestID.TOPBAR_ACTION_SYNC_NOTES}
+          >
+            {syncing ? <Loader size={18} className="rotating-svg" /> : <RefreshCw size={18} />}
+          </button>
+        </Tooltip>
         <button className="note-menu-bar-button" onClick={toggleDarkThemeHandler}>
           {darkTheme ? <Sun size={18} /> : <Moon size={18} />}
         </button>
