@@ -47,34 +47,35 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 
   // eslint-disable-next-line react/display-name
   return (
-    <div data-testid="jjj"></div>
-    // <div className="react-confirm-alert">
-    //   <div className={'react-confirm-alert-body' + theme}>
-    //     <div className="react-confirm-alert-body-heading">
-    //       <Trash2 />
-    //       <h3>{heading}</h3>
-    //     </div>
-    //     <div className="react-confirm-alert-body-content">{content}</div>
-    //     <div className="react-confirm-alert-button-group">
-    //       <button
-    //         className="confirm-button"
-    //         onClick={() => {
-    //           onConfirm()
-    //         }}
-    //       >
-    //         Yes
-    //       </button>
-    //       <button
-    //         className="cancel-button"
-    //         onClick={() => {
-    //           onCancel()
-    //         }}
-    //       >
-    //         No
-    //       </button>
-    //     </div>
-    //   </div>
-    // </div>
+    <div>
+      <div className="react-confirm-alert">
+        <div className={'react-confirm-alert-body' + theme}>
+          <div className="react-confirm-alert-body-heading">
+            <Trash2 />
+            <h3>{heading}</h3>
+          </div>
+          <div className="react-confirm-alert-body-content">{content}</div>
+          <div className="react-confirm-alert-button-group">
+            <button
+              className="confirm-button"
+              onClick={() => {
+                onConfirm()
+              }}
+            >
+              Yes
+            </button>
+            <button
+              className="cancel-button"
+              onClick={() => {
+                onCancel()
+              }}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
