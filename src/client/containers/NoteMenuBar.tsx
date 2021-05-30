@@ -8,9 +8,6 @@ import {
   Download,
   RefreshCw,
   Loader,
-  Settings,
-  Sun,
-  Moon,
   Clipboard as ClipboardCmp,
 } from 'react-feather'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -19,9 +16,7 @@ import { TestID } from '@resources/TestID'
 import { LastSyncedNotification } from '@/components/LastSyncedNotification'
 import { NoteItem, CategoryItem } from '@/types'
 import {
-  toggleSettingsModal,
   togglePreviewMarkdown,
-  toggleDarkTheme,
   updateCodeMirrorOption,
 } from '@/slices/settings'
 import { toggleFavoriteNotes, toggleTrashNotes } from '@/slices/note'
@@ -82,8 +77,6 @@ export const NoteMenuBar = () => {
   const _toggleFavoriteNotes = (noteId: string) => dispatch(toggleFavoriteNotes(noteId))
   const _sync = (notes: NoteItem[], categories: CategoryItem[]) =>
     dispatch(sync({ notes, categories }))
-  const _toggleSettingsModal = () => dispatch(toggleSettingsModal())
-  const _toggleDarkTheme = () => dispatch(toggleDarkTheme())
   const _updateCodeMirrorOption = (key: string, value: any) =>
     dispatch(updateCodeMirrorOption({ key, value }))
 
@@ -111,11 +104,6 @@ export const NoteMenuBar = () => {
     }
   }
   const syncNotesHandler = () => _sync(notes, categories)
-  const settingsHandler = () => _toggleSettingsModal()
-  const toggleDarkThemeHandler = () => {
-    _toggleDarkTheme()
-    _updateCodeMirrorOption('theme', darkTheme ? 'base16-light' : 'new-moon')
-  }
   const togglePreviewHandler = () => {
     togglePreviewIcon(!isToggled)
     _togglePreviewMarkdown()
@@ -193,16 +181,9 @@ export const NoteMenuBar = () => {
             {syncing ? <Loader size={18} className="rotating-svg" /> : <RefreshCw size={18} />}
           </button>
         </Tooltip>
-        <button className="note-menu-bar-button" onClick={toggleDarkThemeHandler}>
-          {darkTheme ? <Sun size={18} /> : <Moon size={18} />}
-        </button>
-
-        <button className="note-menu-bar-button" onClick={settingsHandler}>
-          <Settings aria-hidden size={18} />
-          <span className="sr-only">Settings</span>
-        </button>
       </nav>
     </section>
   )
 }
+
 
