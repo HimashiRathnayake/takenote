@@ -27,4 +27,9 @@ export enum LabelText {
   IMPORT_BACKUP = 'Import backup',
   TOGGLE_FAVORITE = 'Toggle favorite',
   COPY_REFERENCE_TO_NOTE = 'Copy reference to note',
+  CONFIRM_ALERT_HEADER = 'Are you sure?',
+  CATEGORY_DELETE_ALERT_CONTENT = 'Are you sure you want to permanently delete this category?',
+  NOTE_DELETE_ALERT_CONTENT = 'Are you sure you want to permanently delete this note?',
+  NOTE_TO_TRASH_ALERT_CONTENT = 'Are you sure you want to move this note to the Trash?',
+  EMPTY_TRASH_ALERT_CONTENT = 'Are you sure you want to empty the Trash?',
 }
