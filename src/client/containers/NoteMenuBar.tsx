@@ -12,23 +12,19 @@ import {
   Moon,
   Clipboard as ClipboardCmp,
 } from 'react-feather'
+import Tooltip from '@material-ui/core/Tooltip'
+import UIfx from 'uifx'
 
 import { TestID } from '@resources/TestID'
 import { LastSyncedNotification } from '@/components/LastSyncedNotification'
 import { NoteItem, CategoryItem } from '@/types'
-import {
-  togglePreviewMarkdown,
-  toggleDarkTheme,
-  updateCodeMirrorOption,
-} from '@/slices/settings'
+import { togglePreviewMarkdown, toggleDarkTheme, updateCodeMirrorOption } from '@/slices/settings'
 import { toggleFavoriteNotes, toggleTrashNotes } from '@/slices/note'
 import { getCategories, getNotes, getSync, getSettings } from '@/selectors'
 import { downloadNotes, isDraftNote, getShortUuid, copyToClipboard } from '@/utils/helpers'
 import { sync } from '@/slices/sync'
 import { showConfirmationAlert } from '@/containers/ConfirmDialog'
 import { LabelText } from '@resources/LabelText'
-import Tooltip from '@material-ui/core/Tooltip'
-import UIfx from 'uifx';
 
 export const NoteMenuBar = () => {
   // ===========================================================================
@@ -49,39 +45,39 @@ export const NoteMenuBar = () => {
   const activeNote = notes.find((note) => note.id === activeNoteId)!
   const shortNoteUuid = getShortUuid(activeNoteId)
 
-// ===========================================================================
+  // ===========================================================================
   // Sound Efect
   // ===========================================================================
 
-  const favouriteSound = require("../../../sounds/Favourite.wav");
-  const favouriteClick = new UIfx(favouriteSound, {volume: 0.4});
+  const favouriteSound = require('../../../sounds/Favourite.wav')
+  const favouriteClick = new UIfx(favouriteSound, { volume: 0.4 })
 
-  const deleteSound = require("../../../sounds/Delete.mp3");
-  const deleteClick = new UIfx(deleteSound, {volume: 0.4});
+  const deleteSound = require('../../../sounds/Delete.mp3')
+  const deleteClick = new UIfx(deleteSound, { volume: 0.4 })
 
-  const downloadSound = require("../../../sounds/Download.mp3");
-  const downloadClick = new UIfx(downloadSound, {volume: 0.4});
+  const downloadSound = require('../../../sounds/Download.mp3')
+  const downloadClick = new UIfx(downloadSound, { volume: 0.4 })
 
-  const copySound = require("../../../sounds/Copy.mp3");
-  const copyClick = new UIfx(copySound, {volume: 0.4});
+  const copySound = require('../../../sounds/Copy.mp3')
+  const copyClick = new UIfx(copySound, { volume: 0.4 })
 
-  const refreshSound = require("../../../sounds/Refresh.mp3");
-  const refreshClick = new UIfx(refreshSound, {volume: 0.4});
+  const refreshSound = require('../../../sounds/Refresh.mp3')
+  const refreshClick = new UIfx(refreshSound, { volume: 0.4 })
 
-  const editSound = require("../../../sounds/Edit.mp3");
-  const editClick = new UIfx(editSound, {volume: 0.4});
+  const editSound = require('../../../sounds/Edit.mp3')
+  const editClick = new UIfx(editSound, { volume: 0.4 })
 
-  const previewSound = require("../../../sounds/Preview.mp3");
-  const previewClick = new UIfx(previewSound, {volume: 0.4});
+  const previewSound = require('../../../sounds/Preview.mp3')
+  const previewClick = new UIfx(previewSound, { volume: 0.4 })
 
-  const alertSound = require("../../../sounds/Alert.mp3");
-  const alertClick = new UIfx(alertSound, {volume: 0.4});
+  const alertSound = require('../../../sounds/Alert.mp3')
+  const alertClick = new UIfx(alertSound, { volume: 0.4 })
 
-  const buttonClick = require("../../../sounds/Click.mp3");
-  const click = new UIfx(buttonClick, {volume: 0.4});
+  const buttonClick = require('../../../sounds/Click.mp3')
+  const click = new UIfx(buttonClick, { volume: 0.4 })
 
-  const themeChangeSound = require("../../../sounds/ThemeChange.mp3");
-  const themeChangeclick = new UIfx(themeChangeSound, {volume: 0.4});
+  const themeChangeSound = require('../../../sounds/ThemeChange.mp3')
+  const themeChangeclick = new UIfx(themeChangeSound, { volume: 0.4 })
 
   // ===========================================================================
   // State
@@ -164,7 +160,7 @@ export const NoteMenuBar = () => {
     _updateCodeMirrorOption('theme', darkTheme ? 'base16-light' : 'new-moon')
   }
   const togglePreviewHandler = () => {
-    if(isToggled) {
+    if (isToggled) {
       editClick.play()
     } else {
       previewClick.play()
@@ -197,7 +193,7 @@ export const NoteMenuBar = () => {
               <button className="note-menu-bar-button" onClick={favoriteNoteHandler}>
                 {activeNote.favorite ? (
                   <Tooltip title="Remove from Favourites" arrow>
-                    <Star size={18} fill="blue" />
+                    <Star size={18} fill="#5183f5" />
                   </Tooltip>
                 ) : (
                   <Tooltip title="Add to Favourites" arrow>
@@ -247,13 +243,15 @@ export const NoteMenuBar = () => {
           </button>
         </Tooltip>
         <button className="note-menu-bar-button" onClick={toggleDarkThemeHandler}>
-          {darkTheme ?
-          <Tooltip title="Light Mode" arrow> 
-            <Sun size={18} />
-          </Tooltip> : 
-          <Tooltip title="Dark Mode" arrow>
-            <Moon size={18} />
-          </Tooltip>}
+          {darkTheme ? (
+            <Tooltip title="Light Mode" arrow>
+              <Sun size={18} />
+            </Tooltip>
+          ) : (
+            <Tooltip title="Dark Mode" arrow>
+              <Moon size={18} />
+            </Tooltip>
+          )}
         </button>
       </nav>
     </section>
