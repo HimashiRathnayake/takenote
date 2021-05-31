@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import React from 'react'
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react'
 import { Controlled as CodeMirror } from 'react-codemirror2'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -28,6 +28,8 @@ export const NoteEditor: React.FC = () => {
   const { codeMirrorOptions, previewMarkdown } = useSelector(getSettings)
 
   const activeNote = getActiveNote(notes, activeNoteId)
+  const [text, setText] = useState<any | null>(null)
+  const [isListening, setIsListening] = useState(false)
 
   // ===========================================================================
   // Dispatch
@@ -39,6 +41,21 @@ export const NoteEditor: React.FC = () => {
     !pendingSync && dispatch(setPendingSync())
     dispatch(updateNote(note))
   }
+
+  const updateTextEditorFromVoice = () => {}
+
+  useEffect(() => {
+    console.log('use effect note', text)
+
+    if (activeNote) {
+      _updateNote({
+        id: activeNote.id,
+        text: activeNote.text + text + ' ',
+        created: activeNote.created,
+        lastUpdated: dayjs().format(),
+      })
+    }
+  }, [text])
 
   const renderEditor = () => {
     if (loading) {
@@ -100,7 +117,7 @@ export const NoteEditor: React.FC = () => {
 
   return (
     <main className="note-editor">
-      <NoteMenuBar />
+      <NoteMenuBar clickAction={setText} listen={setIsListening} />
       {renderEditor()}
     </main>
   )

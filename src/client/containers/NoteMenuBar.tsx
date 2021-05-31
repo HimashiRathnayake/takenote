@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Dispatch, SetStateAction } from 'react'
+import Popup from 'reactjs-popup'
+import 'reactjs-popup/dist/index.css'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   Eye,
@@ -10,6 +12,8 @@ import {
   Loader,
   Sun,
   Moon,
+  Mic,
+  MicOff,
   Clipboard as ClipboardCmp,
 } from 'react-feather'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -26,7 +30,107 @@ import { sync } from '@/slices/sync'
 import { showConfirmationAlert } from '@/containers/ConfirmDialog'
 import { LabelText } from '@resources/LabelText'
 
-export const NoteMenuBar = () => {
+// declare interface IWindow extends Window {
+//   webkitSpeechRecognition: any;
+// }
+// const {webkitSpeechRecognition} : IWindow = <IWindow>window;
+// declare global {
+//   interface Window { webkitSpeechRecognition: any; }
+// }
+declare global {
+  interface Window {
+    webkitAudioContext: typeof window.AudioContext
+    webkitSpeechRecognition: typeof window.SpeechRecognition
+  }
+}
+const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
+const mic = new SpeechRecognition()
+
+interface IProps {
+  setIsListening?: Dispatch<SetStateAction<boolean>>
+  setText?: Dispatch<SetStateAction<boolean>>
+}
+
+type ChildProps = {
+  clickAction?: (val: string) => void
+  listen?: (val: boolean) => void
+}
+
+export const NoteMenuBar: React.FC<ChildProps> = (
+  { clickAction = () => {} },
+  { listen = () => {} }
+) => {
+  // ok now
+  1 // ===========================================================================
+  // SpeechReconginition
+  // ===========================================================================
+
+  // const recognition = new webkitSpeechRecognition();
+  // console.log(window.webkitSpeechRecognition)
+  if (!('webkitSpeechRecognition' in window)) {
+    console.log('#################################', 'webkitSpeechRecognition' in window)
+  }
+
+  mic.continuous = true
+  mic.interimResults = true
+  mic.lang = 'en-US'
+
+  const [isListening, setIsListening] = useState(false)
+  console.log('1', isListening)
+  const [text, setText] = useState<any | null>(null)
+  const [savedNotes, setSavedNotes] = useState<any | null>([])
+
+  const handleSaveNote = () => {
+    setSavedNotes([...savedNotes, text])
+    setText('')
+  }
+
+  useEffect(() => {
+    handleListen()
+    listen(isListening)
+    console.log('2', isListening)
+    console.log('this is before clicking')
+  }, [isListening])
+
+  const handleListen = () => {
+    if (isListening) {
+      mic.start()
+      console.log('start Mic on Click')
+      console.log('3', isListening)
+    } else {
+      mic.stop()
+      mic.continuous = false
+      console.log('Stopped Mic on Click')
+      console.log('4', isListening)
+    }
+
+    mic.onstart = () => {
+      console.log('4', isListening)
+      console.log('Mics on start function')
+    }
+
+    mic.onend = () => {
+      clickAction(text)
+      setText('')
+    }
+
+    mic.onresult = (event) => {
+      const transcript = Array.from(event.results)
+        .map((result) => result[0])
+        .map((result) => result.transcript)
+        .join('')
+      console.log('5', isListening)
+      console.log(transcript)
+      setText(transcript)
+      console.log('This is before tran script-----------------', transcript)
+
+      console.log('This is after tran script-----------------', transcript)
+      mic.onerror = (event) => {
+        console.log(event.error)
+      }
+    }
+  }
+
   // ===========================================================================
   // Selectors
   // ===========================================================================
@@ -173,6 +277,35 @@ export const NoteMenuBar = () => {
     <section className="note-menu-bar">
       {activeNote && !isDraftNote(activeNote) ? (
         <nav>
+          <Popup
+            trigger={
+              <Tooltip title="Voice to Text" arrow>
+                <button className="note-menu-bar-button">
+                  {isListening ? <MicOff size={18} /> : <Mic size={18} />}
+                </button>
+              </Tooltip>
+            }
+            position="top center"
+            onOpen={() => {
+              setIsListening((prevState) => !prevState)
+            }}
+            onClose={() => {
+              setIsListening((prevState) => !prevState)
+            }}
+            modal
+            className={darkTheme ? 'dark-theme-popup' : 'light-theme-popoup'}
+          >
+            {(close: any) => (
+              <div className="popup-text-container">
+                <Mic />
+                <h2>Speak Now ...</h2>
+                <text className="popup-text">{text}</text>
+                <button className="popup-button" onClick={() => close()}>
+                  Done
+                </button>
+              </div>
+            )}
+          </Popup>
           <button
             className="note-menu-bar-button"
             onClick={togglePreviewHandler}
