@@ -183,6 +183,9 @@ export const NoteMenuBar: React.FC<ChildProps> = (
   const themeChangeSound = require('../../../sounds/ThemeChange.mp3')
   const themeChangeclick = new UIfx(themeChangeSound, { volume: 0.4 })
 
+  const micClickSound = require('../../../sounds/Microphone.mp3')
+  const micClick = new UIfx(micClickSound, { volume: 0.4 })
+
   // ===========================================================================
   // State
   // ===========================================================================
@@ -288,6 +291,7 @@ export const NoteMenuBar: React.FC<ChildProps> = (
             position="top center"
             onOpen={() => {
               setIsListening((prevState) => !prevState)
+              micClick.play()
             }}
             onClose={() => {
               setIsListening((prevState) => !prevState)
