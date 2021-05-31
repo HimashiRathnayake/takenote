@@ -52,7 +52,7 @@ export const NoteMenuBar = () => {
   const favouriteSound = require('../../../sounds/Favourite.wav')
   const favouriteClick = new UIfx(favouriteSound, { volume: 0.4 })
 
-  const deleteSound = require('../../../sounds/Delete.mp3')
+  const deleteSound = require('../../../sounds/Delete.wav')
   const deleteClick = new UIfx(deleteSound, { volume: 0.4 })
 
   const downloadSound = require('../../../sounds/Download.mp3')
