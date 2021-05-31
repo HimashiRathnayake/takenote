@@ -1,9 +1,19 @@
 import React from 'react'
 import { Trash2 } from 'react-feather'
 import { confirmAlert } from 'react-confirm-alert' // Import
-
+import UIfx from 'uifx';
 import { LabelText } from '@resources/LabelText'
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+
+  // ===========================================================================
+  // Sound Efect
+  // ===========================================================================
+
+  const deleteSound = require("../../../sounds/Delete.mp3");
+  const deleteClick = new UIfx(deleteSound, {volume: 0.4});
+
+  const deleteCancelSound = require("../../../sounds/DeleteCancel.mp3");
+  const deleteCancelClick = new UIfx(deleteCancelSound, {volume: 0.4});
 
 export const showConfirmationAlert = (
   content: string,
@@ -61,6 +71,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             <button
               className="confirm-button"
               onClick={() => {
+                deleteClick.play()
                 onConfirm()
               }}
             >
@@ -69,6 +80,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
             <button
               className="cancel-button"
               onClick={() => {
+                deleteCancelClick.play()
                 onCancel()
               }}
             >

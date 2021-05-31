@@ -1,5 +1,5 @@
 import React from 'react'
-import { Plus } from 'react-feather'
+import { Plus, Settings } from 'react-feather'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { LabelText } from '@resources/LabelText'
@@ -18,10 +18,11 @@ import {
   updateSelectedNotes,
   unassignTrashFromNotes,
 } from '@/slices/note'
-import { togglePreviewMarkdown } from '@/slices/settings'
+import { togglePreviewMarkdown, toggleSettingsModal } from '@/slices/settings'
 import { getSettings, getNotes } from '@/selectors'
 import { NoteItem } from '@/types'
 import { newNoteHandlerHelper, getActiveNote } from '@/utils/helpers'
+import UIfx from 'uifx'
 
 export const AppSidebar: React.FC = () => {
   // ===========================================================================
@@ -32,6 +33,13 @@ export const AppSidebar: React.FC = () => {
   const { previewMarkdown, notesSortKey } = useSelector(getSettings)
 
   const activeNote = getActiveNote(notes, activeNoteId)
+
+  // ===========================================================================
+  // Sound Efect
+  // ===========================================================================
+
+  const buttonClick = require("../../../sounds/Click.mp3");
+  const click = new UIfx(buttonClick, {volume: 0.4});
 
   // ===========================================================================
   // Dispatch
@@ -50,12 +58,14 @@ export const AppSidebar: React.FC = () => {
   const _assignTrashToNotes = (noteId: string) => dispatch(assignTrashToNotes(noteId))
   const _unassignTrashFromNotes = (noteId: string) => dispatch(unassignTrashFromNotes(noteId))
   const _assignFavoriteToNotes = (noteId: string) => dispatch(assignFavoriteToNotes(noteId))
+  const _toggleSettingsModal = () => dispatch(toggleSettingsModal())
 
   // ===========================================================================
   // Handlers
   // ===========================================================================
 
-  const newNoteHandler = () =>
+  const newNoteHandler = () => {
+    click.play()
     newNoteHandlerHelper(
       activeFolder,
       previewMarkdown,
@@ -67,7 +77,12 @@ export const AppSidebar: React.FC = () => {
       _updateActiveNote,
       _updateSelectedNotes
     )
+  }
   const swapFolderHandler = _swapFolder(notesSortKey)
+  const settingsHandler = () => {
+    click.play()
+    _toggleSettingsModal()
+  }
 
   return (
     <aside className="app-sidebar">
@@ -109,6 +124,13 @@ export const AppSidebar: React.FC = () => {
         />
         <CategoryList />
       </section>
+      <ActionButton
+        dataTestID={TestID.SETTINGS_MODAL_DOWNLOAD_NOTES}
+        handler={settingsHandler}
+        icon= {Settings}
+        label={LabelText.SETTINGS}
+        text={LabelText.SETTINGS}
+      />
     </aside>
   )
 }

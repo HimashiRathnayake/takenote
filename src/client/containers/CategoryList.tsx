@@ -14,6 +14,7 @@ import { setCategoryEdit, updateCategory, addCategory } from '@/slices/category'
 import { AddCategoryForm } from '@/components/AppSidebar/AddCategoryForm'
 import { AddCategoryButton } from '@/components/AppSidebar/AddCategoryButton'
 import { CollapseCategoryListButton } from '@/components/AppSidebar/CollapseCategoryButton'
+import UIfx from 'uifx';
 
 export const CategoryList: React.FC = () => {
   // ===========================================================================
@@ -43,6 +44,13 @@ export const CategoryList: React.FC = () => {
   const contextMenuRef = useRef<HTMLDivElement>(null)
 
   // ===========================================================================
+  // Sound Efect
+  // ===========================================================================
+
+  const clickSound = require("../../../sounds/Click.mp3");
+  const click = new UIfx(clickSound, {volume: 0.4});
+
+  // ===========================================================================
   // State
   // ===========================================================================
 
@@ -61,6 +69,7 @@ export const CategoryList: React.FC = () => {
   // ===========================================================================
 
   const onAddCategory = (adding: boolean) => {
+    click.play()
     setCategoryListOpen(true)
     setAddingTempCategory(adding)
   }

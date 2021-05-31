@@ -58,9 +58,9 @@ module.exports = {
         test: /\.md$/,
         type: 'asset/source',
       },
-      // Images
+      // Images/audio
       {
-        test: /\.(?:ico|gif|png|jpg|jpeg|webp|svg)$/i,
+        test: /\.(?:ico|gif|png|jpg|jpeg|webp|svg|mp3|wav)$/i,
         type: 'asset/resource',
       },
     ],

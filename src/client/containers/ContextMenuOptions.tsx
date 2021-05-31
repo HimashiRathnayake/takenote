@@ -20,6 +20,29 @@ import { CategoryItem, NoteItem } from '@/types'
 import { setCategoryEdit, deleteCategory } from '@/slices/category'
 import { MenuUtilitiesContext } from '@/containers/ContextMenu'
 import { showConfirmationAlert } from '@/containers/ConfirmDialog'
+import UIfx from 'uifx';
+
+// ===========================================================================
+// Sound Efect
+// ===========================================================================
+
+  const renameSound = require("../../../sounds/Rename.mp3");
+  const renameClick = new UIfx(renameSound, {volume: 0.4});
+
+  const alertSound = require("../../../sounds/Alert.mp3");
+  const alertClick = new UIfx(alertSound, {volume: 0.4});
+
+  const favouriteSound = require("../../../sounds/Favourite.wav");
+  const favouriteClick = new UIfx(favouriteSound, {volume: 0.4});
+
+  const downloadSound = require("../../../sounds/Download.mp3");
+  const downloadClick = new UIfx(downloadSound, {volume: 0.4});
+
+  const copySound = require("../../../sounds/Copy.mp3");
+  const copyClick = new UIfx(copySound, {volume: 0.4});
+
+  const clickSound = require("../../../sounds/Click.mp3");
+  const click = new UIfx(clickSound, {volume: 0.4});
 
 export interface ContextMenuOptionsProps {
   clickedItem: NoteItem | CategoryItem
@@ -67,10 +90,12 @@ const CategoryOptions: React.FC<CategoryOptionsProps> = ({ clickedCategory }) =>
   // ===========================================================================
 
   const startRenameHandler = () => {
+    renameClick.play()
     _setCategoryEdit(clickedCategory.id, clickedCategory.name)
     setOptionsId('')
   }
-  const removeCategoryHandler = () =>
+  const removeCategoryHandler = () => {
+    alertClick.play()
     showConfirmationAlert(
       LabelText.CATEGORY_DELETE_ALERT_CONTENT,
       () => {
@@ -79,6 +104,7 @@ const CategoryOptions: React.FC<CategoryOptionsProps> = ({ clickedCategory }) =>
       },
       darkTheme
     )
+  }
 
   return (
     <nav className="options-nav" data-testid={TestID.CATEGORY_OPTIONS_NAV}>
@@ -135,7 +161,8 @@ const NotesOptions: React.FC<NotesOptionsProps> = ({ clickedNote }) => {
   // Handlers
   // ===========================================================================
 
-  const deleteNotesHandler = () =>
+  const deleteNotesHandler = () => {
+    alertClick.play()
     showConfirmationAlert(
       LabelText.NOTE_DELETE_ALERT_CONTENT,
       () => {
@@ -143,16 +170,23 @@ const NotesOptions: React.FC<NotesOptionsProps> = ({ clickedNote }) => {
       },
       darkTheme
     )
-  const downloadNotesHandler = () =>
+  }
+  const downloadNotesHandler = () => {
+    downloadClick.play()
     downloadNotes(
       selectedNotesIds.includes(clickedNote.id) ? selectedNotes : [clickedNote],
       categories
     )
-  const favoriteNoteHandler = () => _toggleFavoriteNotes(clickedNote.id)
+  } 
+  const favoriteNoteHandler = () => {
+    favouriteClick.play()
+    _toggleFavoriteNotes(clickedNote.id)
+  }
   const trashNoteHandler = () => {
     if (clickedNote.trash) {
       _toggleTrashNotes(clickedNote.id)
     } else {
+      alertClick.play()
       showConfirmationAlert(
         LabelText.NOTE_TO_TRASH_ALERT_CONTENT,
         () => _toggleTrashNotes(clickedNote.id),
@@ -161,12 +195,14 @@ const NotesOptions: React.FC<NotesOptionsProps> = ({ clickedNote }) => {
     }
   }
   const removeCategoryFromNoteHandler = () => {
+    click.play()
     _addCategoryToNote('', clickedNote.id)
     _updateActiveNote(clickedNote.id, false)
   }
   const copyLinkedNoteMarkdownHandler = (e: React.SyntheticEvent, note: NoteItem) => {
     e.preventDefault()
 
+    copyClick.play()
     const shortNoteUuid = getShortUuid(note.id)
     copyToClipboard(`{{${shortNoteUuid}}}`)
   }
