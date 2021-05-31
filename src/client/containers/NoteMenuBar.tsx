@@ -8,7 +8,6 @@ import {
   Download,
   RefreshCw,
   Loader,
-  Settings,
   Sun,
   Moon,
   Clipboard as ClipboardCmp,
@@ -18,7 +17,6 @@ import { TestID } from '@resources/TestID'
 import { LastSyncedNotification } from '@/components/LastSyncedNotification'
 import { NoteItem, CategoryItem } from '@/types'
 import {
-  toggleSettingsModal,
   togglePreviewMarkdown,
   toggleDarkTheme,
   updateCodeMirrorOption,
@@ -117,7 +115,6 @@ export const NoteMenuBar = () => {
   const _toggleFavoriteNotes = (noteId: string) => dispatch(toggleFavoriteNotes(noteId))
   const _sync = (notes: NoteItem[], categories: CategoryItem[]) =>
     dispatch(sync({ notes, categories }))
-  const _toggleSettingsModal = () => dispatch(toggleSettingsModal())
   const _toggleDarkTheme = () => dispatch(toggleDarkTheme())
   const _updateCodeMirrorOption = (key: string, value: any) =>
     dispatch(updateCodeMirrorOption({ key, value }))
@@ -160,10 +157,6 @@ export const NoteMenuBar = () => {
   const syncNotesHandler = () => {
     refreshClick.play()
     _sync(notes, categories)
-  }
-  const settingsHandler = () => {
-    click.play()
-    _toggleSettingsModal()
   }
   const toggleDarkThemeHandler = () => {
     themeChangeclick.play()
@@ -262,13 +255,6 @@ export const NoteMenuBar = () => {
             <Moon size={18} />
           </Tooltip>}
         </button>
-
-        <Tooltip title="Settings" arrow>
-          <button className="note-menu-bar-button" onClick={settingsHandler}>
-            <Settings aria-hidden size={18} />
-            <span className="sr-only">Settings</span>
-          </button>
-        </Tooltip>
       </nav>
     </section>
   )
