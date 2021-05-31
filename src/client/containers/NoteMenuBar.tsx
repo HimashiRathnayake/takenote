@@ -8,6 +8,9 @@ import {
   Download,
   RefreshCw,
   Loader,
+  Settings,
+  Sun,
+  Moon,
   Clipboard as ClipboardCmp,
 } from 'react-feather'
 
@@ -15,7 +18,9 @@ import { TestID } from '@resources/TestID'
 import { LastSyncedNotification } from '@/components/LastSyncedNotification'
 import { NoteItem, CategoryItem } from '@/types'
 import {
+  toggleSettingsModal,
   togglePreviewMarkdown,
+  toggleDarkTheme,
   updateCodeMirrorOption,
 } from '@/slices/settings'
 import { toggleFavoriteNotes, toggleTrashNotes } from '@/slices/note'
@@ -74,6 +79,11 @@ export const NoteMenuBar = () => {
   const alertSound = require("../../../sounds/Alert.mp3");
   const alertClick = new UIfx(alertSound, {volume: 0.4});
 
+  const buttonClick = require("../../../sounds/Click.mp3");
+  const click = new UIfx(buttonClick, {volume: 0.4});
+
+  const themeChangeSound = require("../../../sounds/ThemeChange.mp3");
+  const themeChangeclick = new UIfx(themeChangeSound, {volume: 0.4});
 
   // ===========================================================================
   // State
@@ -107,6 +117,8 @@ export const NoteMenuBar = () => {
   const _toggleFavoriteNotes = (noteId: string) => dispatch(toggleFavoriteNotes(noteId))
   const _sync = (notes: NoteItem[], categories: CategoryItem[]) =>
     dispatch(sync({ notes, categories }))
+  const _toggleSettingsModal = () => dispatch(toggleSettingsModal())
+  const _toggleDarkTheme = () => dispatch(toggleDarkTheme())
   const _updateCodeMirrorOption = (key: string, value: any) =>
     dispatch(updateCodeMirrorOption({ key, value }))
 
@@ -149,6 +161,15 @@ export const NoteMenuBar = () => {
     refreshClick.play()
     _sync(notes, categories)
   }
+  const settingsHandler = () => {
+    click.play()
+    _toggleSettingsModal()
+  }
+  const toggleDarkThemeHandler = () => {
+    themeChangeclick.play()
+    _toggleDarkTheme()
+    _updateCodeMirrorOption('theme', darkTheme ? 'base16-light' : 'new-moon')
+  }
   const togglePreviewHandler = () => {
     if(isToggled) {
       editClick.play()
@@ -183,7 +204,7 @@ export const NoteMenuBar = () => {
               <button className="note-menu-bar-button" onClick={favoriteNoteHandler}>
                 {activeNote.favorite ? (
                   <Tooltip title="Remove from Favourites" arrow>
-                    <Star size={18} fill="black" />
+                    <Star size={18} fill="blue" />
                   </Tooltip>
                 ) : (
                   <Tooltip title="Add to Favourites" arrow>
@@ -230,6 +251,22 @@ export const NoteMenuBar = () => {
             data-testid={TestID.TOPBAR_ACTION_SYNC_NOTES}
           >
             {syncing ? <Loader size={18} className="rotating-svg" /> : <RefreshCw size={18} />}
+          </button>
+        </Tooltip>
+        <button className="note-menu-bar-button" onClick={toggleDarkThemeHandler}>
+          {darkTheme ?
+          <Tooltip title="Light Mode" arrow> 
+            <Sun size={18} />
+          </Tooltip> : 
+          <Tooltip title="Dark Mode" arrow>
+            <Moon size={18} />
+          </Tooltip>}
+        </button>
+
+        <Tooltip title="Settings" arrow>
+          <button className="note-menu-bar-button" onClick={settingsHandler}>
+            <Settings aria-hidden size={18} />
+            <span className="sr-only">Settings</span>
           </button>
         </Tooltip>
       </nav>
