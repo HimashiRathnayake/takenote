@@ -97,6 +97,9 @@ export const NoteMenuBar: React.FC<ChildProps> = (
       mic.start()
       console.log('start Mic on Click')
       console.log('3', isListening)
+      mic.onend = () => {
+        mic.start()
+      }
     } else {
       mic.stop()
       mic.continuous = false
@@ -301,9 +304,14 @@ export const NoteMenuBar: React.FC<ChildProps> = (
           >
             {(close: any) => (
               <div className="popup-text-container">
-                <Mic />
+                <img
+                  src={require('../../resources/assets/audio-gif.gif')}
+                  alt="loading..."
+                  width="60"
+                  height="60"
+                />
                 <h2>Speak Now ...</h2>
-                <text className="popup-text">{text}</text>
+                <div className="popup-text">{text}</div>
                 <button className="popup-button" onClick={() => close()}>
                   Done
                 </button>

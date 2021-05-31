@@ -86,7 +86,7 @@ $dark-background: #333;
 
 .popup-content {
   border-radius: 5px;
-  height: 35%;
+  height: 52%;
 }
 
 .popup-text-container {
@@ -97,18 +97,28 @@ $dark-background: #333;
 }
 
 .popup-text {
-  height: 100px;
+  padding-top: 15px;
+  height: 180px;
   overflow-y: scroll;
   padding-inline: 20px 10px;
+  font-weight: 450;
+  font-family: $monospace;
+  background: darken(#fff, 10%);
+  font-size: 16px;
+  width: 90%;
 }
 
 .popup-button {
   width: 100px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 .dark-theme-popup-content {
   background: $dark-background;
   border: 1px solid $dark-background;
   color: $light-font-color;
+
+  .popup-text {
+    background: darken($dark-background, 5%);
+  }
 }
