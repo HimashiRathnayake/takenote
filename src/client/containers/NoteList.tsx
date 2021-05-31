@@ -58,6 +58,9 @@ export const NoteList: React.FC = () => {
   const alertSound = require("../../../sounds/Alert.mp3");
   const alertClick = new UIfx(alertSound, {volume: 0.4});
 
+  const buttonClick = require("../../../sounds/Click.mp3");
+  const click = new UIfx(buttonClick, {volume: 0.4}); 
+
   // ===========================================================================
   // Refs
   // ===========================================================================
@@ -218,6 +221,7 @@ export const NoteList: React.FC = () => {
               }
               key={note.id}
               onClick={(event) => {
+                click.play()
                 event.stopPropagation()
 
                 _updateSelectedNotes(note.id, event.metaKey)

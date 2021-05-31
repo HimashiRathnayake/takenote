@@ -83,6 +83,9 @@ export const AppSidebar: React.FC = () => {
     click.play()
     _toggleSettingsModal()
   }
+  const sectionHandler = () => {
+    click.play()
+  }
 
   return (
     <aside className="app-sidebar">
@@ -93,7 +96,7 @@ export const AppSidebar: React.FC = () => {
         label={LabelText.CREATE_NEW_NOTE}
         text={LabelText.NEW_NOTE}
       />
-      <section className="app-sidebar-main">
+      <section className="app-sidebar-main" onClick={sectionHandler}>
         <ScratchpadOption
           active={activeFolder === Folder.SCRATCHPAD}
           swapFolder={swapFolderHandler}
