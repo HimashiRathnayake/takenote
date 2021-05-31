@@ -301,6 +301,8 @@ export const NoteMenuBar: React.FC<ChildProps> = (
             }}
             modal
             className={darkTheme ? 'dark-theme-popup' : 'light-theme-popoup'}
+            closeOnDocumentClick={false}
+            closeOnEscape={false}
           >
             {(close: any) => (
               <div className="popup-text-container">
